@@ -21,7 +21,7 @@ public class SecurityConfig {
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
                 .authorizeHttpRequests((auth) -> auth // 특정 경로에 요청을 허용/비허용
-                        .requestMatchers("/", "/login").permitAll() // 경로, 경로에 대한 권한 인가
+                        .requestMatchers("/", "/login", "/join", "/joinProc").permitAll() // 경로, 경로에 대한 권한 인가
                         .requestMatchers("/admin").hasRole("ADMIN") // ADMIN 일때만 허용
                         .requestMatchers("/my/**").hasAnyRole("ADMIN", "USER")
                         .anyRequest().authenticated()

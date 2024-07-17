@@ -2,6 +2,7 @@ package com.example.testsecurity.service;
 
 import com.example.testsecurity.dto.JoinDTO;
 import com.example.testsecurity.entity.UserEntity;
+import com.example.testsecurity.exception.DuplicateUserException;
 import com.example.testsecurity.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -17,13 +18,16 @@ public class JoinService {
     public void joinProcess(JoinDTO joinDTO) {
 
         // db에 이미 동일한 username을 가진 회원이 존재하는지 검증 필요
+        if (userRepository.existsByUsername(joinDTO.getUsername())) {
+            throw new DuplicateUserException("Username already exists: " + joinDTO.getUsername());
+        }
 
-        UserEntity data = new UserEntity();
+        UserEntity newUser = new UserEntity();
 
-        data.setUsername(joinDTO.getUsername());
-        data.setPassword(bCryptPasswordEncoder.encode(joinDTO.getPassword()));
-        data.setRole("ROLE_USER");
+        newUser.setUsername(joinDTO.getUsername());
+        newUser.setPassword(bCryptPasswordEncoder.encode(joinDTO.getPassword()));
+        newUser.setRole("ROLE_USER");
 
-        userRepository.save(data);
+        userRepository.save(newUser);
     }
 }

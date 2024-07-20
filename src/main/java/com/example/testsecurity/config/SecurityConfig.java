@@ -32,8 +32,9 @@ public class SecurityConfig {
                         .loginProcessingUrl("/loginProc")
                         .permitAll());
 
-        http
-                .csrf((auth) -> auth.disable());
+//        http
+//                .csrf((auth) -> auth.disable());
+
 
         http
                 .sessionManagement((auth) -> auth
